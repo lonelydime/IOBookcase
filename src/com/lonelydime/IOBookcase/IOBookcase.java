@@ -17,12 +17,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.nijikokun.bukkit.Permissions.Permissions;
 import com.nijiko.permissions.PermissionHandler;
+import org.anjocaido.groupmanager.GroupManager;
 
 public class IOBookcase extends JavaPlugin{
 	private final BioBListenerEvent blockListener = new BioBListenerEvent(this);
 	
 	private final Logger log = Logger.getLogger("Minecraft");
 	public static PermissionHandler Permissions = null;
+	public static GroupManager gm = null;
 	public static String nospawnblocks; 
 
 	public void onDisable() {
@@ -61,12 +63,20 @@ public class IOBookcase extends JavaPlugin{
 	
 	public void setupPermissions() {
 		Plugin test = this.getServer().getPluginManager().getPlugin("Permissions");
-
+		Plugin p = this.getServer().getPluginManager().getPlugin("GroupManager");
+		
 		if(Permissions == null) {
 		    if(test != null) {
 		    	Permissions = ((Permissions)test).getHandler();
 		    }
 		}
+		
+		if (p != null) {
+            if (!p.isEnabled()) {
+                this.getServer().getPluginManager().enablePlugin(p);
+            }
+            gm = (GroupManager) p;
+        } 
 	}
 	
 	public void connect() throws Exception {
