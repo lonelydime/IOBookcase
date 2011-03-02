@@ -89,6 +89,25 @@ public class IOBookcase extends JavaPlugin{
 		statement.execute("CREATE TABLE IF NOT EXISTS bookshelf (`locx` REAL,"
 				+"`locy` REAL, `locz` REAL, `line1` varchar(32), `line2` varchar(32), `line3` varchar(32), `line4` varchar(32), `line5` varchar(32) );");
 		
+		ResultSet rs = statement.executeQuery("pragma table_info (bookshelf)");
+		boolean requiresupdate = true;
+		
+		while (rs.next()) {
+			if (rs.getString("name").matches("line6") ) {
+				requiresupdate = false;
+			}
+        }
+		
+		if (requiresupdate) {
+			log.info("[IOBookcase] - Updating table to allow 10 lines");
+			statement.execute("ALTER TABLE bookshelf ADD COLUMN `line6` varchar(32)");
+			statement.execute("ALTER TABLE bookshelf ADD COLUMN `line7` varchar(32)");
+			statement.execute("ALTER TABLE bookshelf ADD COLUMN `line8` varchar(32)");
+			statement.execute("ALTER TABLE bookshelf ADD COLUMN `line9` varchar(32)");
+			statement.execute("ALTER TABLE bookshelf ADD COLUMN `line10` varchar(32)");
+			log.info("[IOBookcase] - Table updated");
+		}
+		
 		statement.close();
 		connection.close();
 	}
@@ -125,13 +144,13 @@ public class IOBookcase extends JavaPlugin{
 	
 	public String[] readcase(int x, int y, int z) throws Exception {
 		
-		String[] sendback = {"This bookcase is empty.", null, null, null, null};
+		String[] sendback = {"This bookcase is empty.", null, null, null, null, null, null, null, null, null};
 		
 		Class.forName("org.sqlite.JDBC");
 		
 		Connection connection = DriverManager.getConnection("jdbc:sqlite:"+getDataFolder().toString()+File.separator+"bookcase.db");		
 		Statement statement = connection.createStatement();
-		ResultSet rs = statement.executeQuery("SELECT `line1`, `line2`, `line3`, `line4`, `line5` FROM `bookshelf` WHERE `locx` = "+x+" AND `locy` = "+y+" AND `locz` = "+z+";");
+		ResultSet rs = statement.executeQuery("SELECT `line1`, `line2`, `line3`, `line4`, `line5`, `line6`, `line7`, `line8`, `line9`, `line10` FROM `bookshelf` WHERE `locx` = "+x+" AND `locy` = "+y+" AND `locz` = "+z+";");
 		//ResultSet rs = statement.executeQuery("SELECT * FROM bookshelf");
         
         while (rs.next()) {
@@ -140,6 +159,11 @@ public class IOBookcase extends JavaPlugin{
         	sendback[2] = rs.getString("line3");
         	sendback[3] = rs.getString("line4");
         	sendback[4] = rs.getString("line5");
+        	sendback[5] = rs.getString("line6");
+        	sendback[6] = rs.getString("line7");
+        	sendback[7] = rs.getString("line8");
+        	sendback[8] = rs.getString("line9");
+        	sendback[9] = rs.getString("line10");
         }
         	
 		

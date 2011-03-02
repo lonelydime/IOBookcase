@@ -1,5 +1,8 @@
 package com.lonelydime.IOBookcase;
 
+//import net.minecraft.server.EntityPlayer;
+//import net.minecraft.server.TileEntitySign;
+
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -9,6 +12,7 @@ import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockRightClickEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.inventory.ItemStack;
+//import org.bukkit.craftbukkit.entity.CraftPlayer;
 
 public class BioBListenerEvent extends BlockListener{
 	public static IOBookcase plugin;
@@ -30,6 +34,13 @@ public class BioBListenerEvent extends BlockListener{
 		}
 		
 		if (block.getType().getId() == 47) {
+			/*if (player.getItemInHand().getTypeId() == 280) {
+				EntityPlayer eh = ((CraftPlayer) player).getHandle();
+				TileEntitySign tsn = new TileEntitySign();
+				System.out.println(tsn.toString());
+
+				eh.a(tsn);
+			}*/
 			if ((!player.getItemInHand().getType().isBlock() || player.getItemInHand().getTypeId() == 0) 
 					&& player.getItemInHand().getTypeId()!= 323) {
 				int locx = block.getX();
@@ -94,9 +105,9 @@ public class BioBListenerEvent extends BlockListener{
 
 				if (event.getLine(0).toLowerCase().contains("@line") ) {
 					splittext = event.getLine(0).split(" ");
-					if (splittext[1] != null) {
+					if (splittext.length > 1) {
 						linenum = Integer.parseInt(splittext[1]);
-						if (splittext[2] != null) {
+						if (splittext.length > 2) {
 							splittext[2] = splittext[2].toLowerCase();
 							
 							if (splittext[2].equals("black"))
@@ -130,8 +141,8 @@ public class BioBListenerEvent extends BlockListener{
 							}
 						}
 						
-						texttowrite = "¤"+linecolor+event.getLine(1)+" "+event.getLine(2)+" "+event.getLine(3);
-						if (linenum < 6) {
+						texttowrite = "¤"+linecolor+event.getLine(1)+event.getLine(2)+event.getLine(3);
+						if (linenum < 11) {
 							try {
 								plugin.writesql(texttowrite, linenum, bookcase.getX(), bookcase.getY(), bookcase.getZ());
 								player.sendMessage("Text written to line "+linenum);
@@ -147,7 +158,7 @@ public class BioBListenerEvent extends BlockListener{
 							player.setItemInHand(currentitem);
 						}
 						else {
-							player.sendMessage("Only lines 1-5 allowed.");
+							player.sendMessage("Only lines 1-10 allowed.");
 						}
 					}
 					else {
