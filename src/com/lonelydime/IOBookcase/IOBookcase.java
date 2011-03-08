@@ -1,7 +1,7 @@
 package com.lonelydime.IOBookcase;
 
 import java.io.File;
-//import java.io.IOException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -15,6 +15,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+//permissions
 import com.nijikokun.bukkit.Permissions.Permissions;
 import com.nijiko.permissions.PermissionHandler;
 import org.anjocaido.groupmanager.GroupManager;
@@ -25,6 +26,7 @@ public class IOBookcase extends JavaPlugin{
 	private final Logger log = Logger.getLogger("Minecraft");
 	public static PermissionHandler Permissions = null;
 	public static GroupManager gm = null;
+	
 	public static String nospawnblocks; 
 
 	public void onDisable() {
@@ -36,6 +38,16 @@ public class IOBookcase extends JavaPlugin{
 		if (!new File(getDataFolder().toString()).exists() ) {
         	new File(getDataFolder().toString()).mkdir();
         }
+		
+		File importcase = new File(getDataFolder()+"/import.txt");
+		
+		if (!importcase.exists()) {
+			try {
+				importcase.createNewFile();
+			} catch (IOException e) {
+				System.out.println("cannot create file "+importcase.getPath()+"/"+importcase.getName());
+			}
+		}
 		
 		//nospawnblocks = getConfiguration().getString("no-spawn-blocks", "17,18");
 		
@@ -76,7 +88,9 @@ public class IOBookcase extends JavaPlugin{
                 this.getServer().getPluginManager().enablePlugin(p);
             }
             gm = (GroupManager) p;
+            //WorldsHolder wd = gm.getWorldsHolder();
         } 
+
 	}
 	
 	public void connect() throws Exception {
