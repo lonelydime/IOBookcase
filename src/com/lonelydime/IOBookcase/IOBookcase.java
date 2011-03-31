@@ -22,6 +22,7 @@ import org.anjocaido.groupmanager.GroupManager;
 
 public class IOBookcase extends JavaPlugin{
 	private final BioBListenerEvent blockListener = new BioBListenerEvent(this);
+	private final BioPListenerEvent playerListener = new BioPListenerEvent(this);
 	
 	private final Logger log = Logger.getLogger("Minecraft");
 	public static PermissionHandler Permissions = null;
@@ -53,7 +54,7 @@ public class IOBookcase extends JavaPlugin{
 		
         //Create the pluginmanage pm.
         PluginManager pm = getServer().getPluginManager();
-        pm.registerEvent(Event.Type.BLOCK_RIGHTCLICKED, blockListener, Priority.Normal, this);
+        pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.SIGN_CHANGE, blockListener, Priority.Normal, this);
         //pm.registerEvent(Event.Type.BLOCK_PLACED, blockListener, Priority.Normal, this);

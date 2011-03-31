@@ -14,7 +14,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockListener;
-import org.bukkit.event.block.BlockRightClickEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.inventory.ItemStack;
 //import org.bukkit.craftbukkit.entity.CraftPlayer;
@@ -25,50 +24,6 @@ public class BioBListenerEvent extends BlockListener{
 	public BioBListenerEvent(IOBookcase instance) {
         plugin = instance;
     }
-	
-	public void onBlockRightClick(BlockRightClickEvent event) {
-		Player player = event.getPlayer();
-		Block block = event.getBlock();
-		boolean canRead = true;
-		
-		if (IOBookcase.Permissions != null) {
-			canRead = IOBookcase.Permissions.has(player, "iobookcase.canread");
-		}
-		else if (IOBookcase.gm != null) {
-			canRead = IOBookcase.gm.getWorldsHolder().getWorldPermissions(player).has(player,"iobookcase.canread");
-		}
-		
-		if (block.getType().getId() == 47) {
-			/*if (player.getItemInHand().getTypeId() == 280) {
-				EntityPlayer eh = ((CraftPlayer) player).getHandle();
-				TileEntitySign tsn = new TileEntitySign();
-				System.out.println(tsn.toString());
-
-				eh.a(tsn);
-			}*/
-			if ((!player.getItemInHand().getType().isBlock() || player.getItemInHand().getTypeId() == 0) 
-					&& player.getItemInHand().getTypeId()!= 323) {
-				int locx = block.getX();
-				int locy = block.getY();
-				int locz = block.getZ();
-				
-				if (canRead) {
-					String[] casetext;
-					try {
-						casetext = plugin.readcase(locx, locy, locz);
-						int i = 0;
-						while (casetext[i] != null) {
-							player.sendMessage(casetext[i]);
-							i++;
-						}
-					}
-					catch (Exception e) {
-						System.out.println("read: "+e);
-					}
-				}
-			}
-		}
-	}
 	
 	public void onSignChange(SignChangeEvent event) {
 		Player player = event.getPlayer();
